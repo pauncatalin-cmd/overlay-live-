@@ -37,29 +37,12 @@ html, body {
   background:
     radial-gradient(circle at 48% 78%, rgba(255, 0, 110, 0.08), transparent 24%),
     radial-gradient(circle at 27% 82%, rgba(0, 120, 255, 0.10), transparent 26%),
-    linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.14));
+    linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.10));
   pointer-events: none;
   z-index: 2;
 }
 
-/* ploaie fină */
-.rain {
-  position: absolute;
-  inset: 0;
-  background-image: linear-gradient(180deg, rgba(120, 210, 255, 0.24), transparent);
-  background-size: 2px 58px;
-  opacity: 0.08;
-  transform: skewX(-12deg);
-  animation: rainMove 0.75s infinite linear;
-  z-index: 4;
-}
-
-@keyframes rainMove {
-  from { background-position: 0 0; }
-  to { background-position: 0 58px; }
-}
-
-/* stopuri reale peste fotografia mașinii */
+/* stopuri mașină centrală */
 .car-tail-left,
 .car-tail-right {
   position: absolute;
@@ -102,7 +85,7 @@ html, body {
   }
 }
 
-/* glow sub stopuri, pe asfalt */
+/* reflexie stopuri pe asfalt */
 .red-road-glow {
   position: absolute;
   left: 240px;
@@ -123,41 +106,94 @@ html, body {
   50%, 100% { opacity: 0.56; }
 }
 
-/* sirenă poliție discretă */
-.police-blue,
-.police-red {
+/* girofar poliție, roșu apoi albastru */
+.police-siren-red,
+.police-siren-blue {
   position: absolute;
   top: 1498px;
-  width: 130px;
-  height: 40px;
+  width: 145px;
+  height: 44px;
   border-radius: 50%;
   filter: blur(18px);
   z-index: 5;
 }
 
-.police-blue {
-  left: 105px;
-  background: rgba(0, 100, 255, 0.78);
-  animation: policeBlue 1.2s infinite alternate ease-in-out;
+.police-siren-red {
+  left: 100px;
+  background: rgba(255, 0, 65, 0.82);
+  animation: redSiren 1.2s infinite ease-in-out;
 }
 
-.police-red {
-  left: 215px;
-  background: rgba(255, 0, 70, 0.68);
-  animation: policeRed 1.2s infinite alternate ease-in-out;
+.police-siren-blue {
+  left: 200px;
+  background: rgba(0, 120, 255, 0.82);
+  animation: blueSiren 1.2s infinite ease-in-out;
 }
 
-@keyframes policeBlue {
-  from { opacity: 0.22; transform: scale(0.94); }
-  to { opacity: 0.70; transform: scale(1.06); }
+@keyframes redSiren {
+  0%, 45% {
+    opacity: 0.88;
+    transform: scale(1.08);
+    box-shadow:
+      0 0 26px rgba(255, 0, 65, 0.75),
+      0 0 70px rgba(255, 0, 65, 0.40);
+  }
+
+  50%, 100% {
+    opacity: 0.18;
+    transform: scale(0.92);
+    box-shadow:
+      0 0 10px rgba(255, 0, 65, 0.18);
+  }
 }
 
-@keyframes policeRed {
-  from { opacity: 0.70; transform: scale(1.06); }
-  to { opacity: 0.22; transform: scale(0.94); }
+@keyframes blueSiren {
+  0%, 45% {
+    opacity: 0.18;
+    transform: scale(0.92);
+    box-shadow:
+      0 0 10px rgba(0, 120, 255, 0.18);
+  }
+
+  50%, 100% {
+    opacity: 0.88;
+    transform: scale(1.08);
+    box-shadow:
+      0 0 26px rgba(0, 120, 255, 0.75),
+      0 0 70px rgba(0, 120, 255, 0.40);
+  }
 }
 
-/* fum de la roți */
+/* lumină pe asfalt de la girofar */
+.police-road-light {
+  position: absolute;
+  left: 20px;
+  bottom: 145px;
+  width: 430px;
+  height: 210px;
+  border-radius: 50%;
+  filter: blur(26px);
+  background:
+    radial-gradient(circle at 35% 55%, rgba(255, 0, 65, 0.26), transparent 32%),
+    radial-gradient(circle at 70% 55%, rgba(0, 120, 255, 0.30), transparent 34%);
+  opacity: 0.52;
+  animation: policeRoadPulse 1.2s infinite ease-in-out;
+  z-index: 3;
+}
+
+@keyframes policeRoadPulse {
+  0%, 45% {
+    opacity: 0.46;
+    filter: blur(24px) hue-rotate(0deg);
+  }
+
+  50%, 100% {
+    opacity: 0.62;
+    filter: blur(28px) hue-rotate(20deg);
+  }
+}
+
+/* fum dinamic */
 .smoke {
   position: absolute;
   bottom: 62px;
@@ -168,6 +204,33 @@ html, body {
   opacity: 0.56;
   z-index: 7;
   animation: smokeMove 5.8s infinite alternate ease-in-out;
+}
+
+.smoke::before,
+.smoke::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(24px);
+  opacity: 0.55;
+}
+
+.smoke::before {
+  width: 220px;
+  height: 120px;
+  left: 60px;
+  top: 45px;
+  background: rgba(255,255,255,0.12);
+  animation: smokeBubbleOne 4.4s infinite alternate ease-in-out;
+}
+
+.smoke::after {
+  width: 260px;
+  height: 140px;
+  right: 30px;
+  top: 70px;
+  background: rgba(255,255,255,0.09);
+  animation: smokeBubbleTwo 5.2s infinite alternate ease-in-out;
 }
 
 .smoke-left {
@@ -190,9 +253,34 @@ html, body {
     transform: translateX(-28px) translateY(8px) scale(0.95);
     opacity: 0.38;
   }
+
   to {
     transform: translateX(42px) translateY(-16px) scale(1.14);
     opacity: 0.68;
+  }
+}
+
+@keyframes smokeBubbleOne {
+  from {
+    transform: translateX(-20px) translateY(18px) scale(0.9);
+    opacity: 0.28;
+  }
+
+  to {
+    transform: translateX(46px) translateY(-22px) scale(1.22);
+    opacity: 0.58;
+  }
+}
+
+@keyframes smokeBubbleTwo {
+  from {
+    transform: translateX(28px) translateY(12px) scale(0.88);
+    opacity: 0.22;
+  }
+
+  to {
+    transform: translateX(-42px) translateY(-26px) scale(1.18);
+    opacity: 0.50;
   }
 }
 
@@ -232,28 +320,7 @@ html, body {
   }
 }
 
-/* lumină fină pe plăcuța KIP */
-.plate-glow {
-  position: absolute;
-  left: 476px;
-  top: 1638px;
-  width: 128px;
-  height: 46px;
-  border-radius: 8px;
-  background: rgba(170, 210, 255, 0.10);
-  box-shadow:
-    0 0 16px rgba(150, 210, 255, 0.38),
-    inset 0 0 10px rgba(255,255,255,0.12);
-  animation: platePulse 2.2s infinite alternate ease-in-out;
-  z-index: 6;
-}
-
-@keyframes platePulse {
-  from { opacity: 0.24; }
-  to { opacity: 0.62; }
-}
-
-/* puls discret pe toată zona de jos */
+/* puls discret jos */
 .bottom-pulse {
   position: absolute;
   left: 0;
@@ -261,17 +328,17 @@ html, body {
   width: 1080px;
   height: 520px;
   background:
-    radial-gradient(circle at 28% 74%, rgba(255, 0, 120, 0.12), transparent 28%),
-    radial-gradient(circle at 72% 74%, rgba(0, 140, 255, 0.12), transparent 30%);
+    radial-gradient(circle at 28% 74%, rgba(255, 0, 120, 0.10), transparent 28%),
+    radial-gradient(circle at 72% 74%, rgba(0, 140, 255, 0.10), transparent 30%);
   filter: blur(26px);
-  opacity: 0.36;
+  opacity: 0.30;
   animation: bottomPulse 3.5s infinite alternate ease-in-out;
   z-index: 1;
 }
 
 @keyframes bottomPulse {
-  from { opacity: 0.24; }
-  to { opacity: 0.48; }
+  from { opacity: 0.20; }
+  to { opacity: 0.42; }
 }
 </style>
 </head>
@@ -279,17 +346,15 @@ html, body {
 <body>
   <div class="scene">
     <div class="bottom-pulse"></div>
-    <div class="rain"></div>
 
     <div class="red-road-glow"></div>
 
-    <div class="police-blue"></div>
-    <div class="police-red"></div>
+    <div class="police-siren-red"></div>
+    <div class="police-siren-blue"></div>
+    <div class="police-road-light"></div>
 
     <div class="car-tail-left"></div>
     <div class="car-tail-right"></div>
-
-    <div class="plate-glow"></div>
 
     <div class="smoke smoke-left"></div>
     <div class="smoke smoke-right"></div>
