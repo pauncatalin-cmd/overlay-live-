@@ -2,8 +2,8 @@
 <html lang="ro">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>KIP Vertical Overlay</title>
+<meta name="viewport" content="width=1080, height=1920, initial-scale=1.0" />
+<title>KIP Overlay Background</title>
 
 <style>
 * {
@@ -12,11 +12,14 @@
   box-sizing: border-box;
 }
 
-body {
+html, body {
   width: 1080px;
   height: 1920px;
   overflow: hidden;
-  background: #05080f;
+  background: transparent;
+}
+
+body {
   font-family: Arial, sans-serif;
 }
 
@@ -24,13 +27,15 @@ body {
   position: relative;
   width: 1080px;
   height: 1920px;
+  overflow: hidden;
   background:
-    radial-gradient(circle at 75% 30%, rgba(0, 160, 255, 0.16), transparent 28%),
-    radial-gradient(circle at 20% 80%, rgba(0, 255, 170, 0.10), transparent 30%),
-    linear-gradient(180deg, #03060c 0%, #07101c 45%, #04070d 100%);
+    radial-gradient(circle at 20% 18%, rgba(0, 255, 255, 0.14), transparent 28%),
+    radial-gradient(circle at 88% 38%, rgba(255, 0, 180, 0.12), transparent 32%),
+    radial-gradient(circle at 25% 82%, rgba(0, 255, 130, 0.13), transparent 30%),
+    linear-gradient(180deg, #02040a 0%, #04101c 46%, #03060d 100%);
 }
 
-/* textură discretă */
+/* fundal cyberpunk curat */
 .overlay::before {
   content: "";
   position: absolute;
@@ -38,339 +43,351 @@ body {
   background:
     linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-  background-size: 42px 42px;
-  opacity: 0.35;
+  background-size: 44px 44px;
+  opacity: 0.32;
 }
 
-/* glow animat */
+.overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(0, 195, 255, 0.18), transparent 35%),
+    linear-gradient(90deg, rgba(0,0,0,0.70), transparent 22%, transparent 78%, rgba(0,0,0,0.70));
+  pointer-events: none;
+}
+
+/* lumini animate */
 .glow {
   position: absolute;
+  border-radius: 50%;
+  filter: blur(95px);
+  opacity: 0.45;
+  animation: glowMove 8s infinite alternate ease-in-out;
+}
+
+.glow.one {
   width: 520px;
   height: 520px;
-  border-radius: 50%;
-  filter: blur(90px);
-  opacity: 0.5;
-  animation: floatGlow 8s infinite alternate ease-in-out;
+  top: -120px;
+  left: -130px;
+  background: #00eaff;
 }
 
-.g1 {
-  top: 120px;
-  right: -120px;
-  background: #008cff;
+.glow.two {
+  width: 600px;
+  height: 600px;
+  right: -180px;
+  top: 500px;
+  background: #ff00cc;
+  animation-delay: 1.5s;
 }
 
-.g2 {
-  bottom: 120px;
-  left: -150px;
-  background: #00ffb3;
+.glow.three {
+  width: 620px;
+  height: 620px;
+  left: -190px;
+  bottom: -80px;
+  background: #00ff88;
+  animation-delay: 2.5s;
 }
 
-@keyframes floatGlow {
-  from { transform: translateY(0) scale(1); }
-  to { transform: translateY(60px) scale(1.12); }
+@keyframes glowMove {
+  from {
+    transform: translateY(0) scale(1);
+  }
+  to {
+    transform: translateY(55px) scale(1.12);
+  }
 }
 
-/* zona sus */
-.top-frame {
+/* rama cameră sus */
+.camera-frame {
   position: absolute;
-  left: 42px;
-  top: 38px;
-  width: 996px;
-  height: 610px;
-  border: 2px solid rgba(0, 185, 255, 0.7);
-  border-radius: 22px;
+  left: 92px;
+  top: 48px;
+  width: 896px;
+  height: 565px;
+  border-radius: 0 0 24px 24px;
+  border: 2px solid rgba(0, 225, 255, 0.85);
+  border-top: 2px solid rgba(0, 225, 255, 0.55);
+  background: rgba(0, 0, 0, 0.12);
   box-shadow:
-    0 0 18px rgba(0, 185, 255, 0.9),
-    inset 0 0 35px rgba(0, 185, 255, 0.12);
+    0 0 18px rgba(0, 225, 255, 0.85),
+    inset 0 0 32px rgba(0, 225, 255, 0.10);
+  z-index: 2;
 }
 
-.logo {
+.camera-frame::before,
+.camera-frame::after {
+  content: "";
   position: absolute;
-  top: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: #dff9ff;
-  font-size: 54px;
-  font-weight: 900;
-  letter-spacing: 3px;
-  text-shadow:
-    0 0 8px #00c8ff,
-    0 0 22px #006eff;
+  width: 110px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #00eaff, transparent);
+  top: -2px;
 }
 
-.logo span {
-  color: #25ff72;
-  text-shadow:
-    0 0 8px #25ff72,
-    0 0 20px #25ff72;
+.camera-frame::before {
+  left: 32px;
 }
 
-/* carduri stânga */
-.left-widgets {
+.camera-frame::after {
+  right: 32px;
+}
+
+/* delimitare bară de tranziție între cameră și sursă */
+.mid-divider {
   position: absolute;
-  top: 160px;
-  left: 70px;
-  display: flex;
-  flex-direction: column;
-  gap: 34px;
-}
-
-.widget {
-  width: 125px;
-  height: 115px;
-  border: 1px solid rgba(0, 200, 255, 0.55);
-  background: rgba(0, 10, 25, 0.55);
-  box-shadow: 0 0 18px rgba(0, 200, 255, 0.25);
-  border-radius: 14px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.widget .icon {
-  font-size: 34px;
-  margin-bottom: 8px;
-}
-
-.widget .title {
-  color: white;
-  font-size: 14px;
-  font-weight: 800;
-}
-
-.widget .value {
-  color: #00eaff;
-  font-size: 18px;
-  font-weight: 900;
-}
-
-/* bara de mijloc */
-.middle-bar {
-  position: absolute;
-  left: 42px;
-  top: 680px;
-  width: 996px;
-  height: 118px;
+  left: 92px;
+  top: 620px;
+  width: 896px;
+  height: 96px;
   border-radius: 18px;
-  background: rgba(3, 9, 18, 0.88);
-  border: 1px solid rgba(0, 200, 255, 0.65);
-  box-shadow:
-    0 0 20px rgba(0, 200, 255, 0.65),
-    inset 0 0 30px rgba(0, 200, 255, 0.12);
-}
-
-.action-text {
-  position: absolute;
-  width: 100%;
-  top: 20px;
-  text-align: center;
-  font-size: 31px;
-  font-weight: 900;
-  color: white;
-  text-shadow: 0 0 12px #00eaff;
-}
-
-.action-text span {
-  color: #ff2bd6;
-  text-shadow: 0 0 16px #ff2bd6;
-}
-
-.promo {
-  position: absolute;
-  width: 100%;
-  bottom: 18px;
-  text-align: center;
-  color: white;
-  font-size: 24px;
-  font-weight: 800;
-}
-
-.promo b {
-  color: #25ff72;
-  font-size: 34px;
-  text-shadow: 0 0 16px #25ff72;
-}
-
-/* social counters */
-.kick {
-  position: absolute;
-  left: 70px;
-  top: 722px;
-  color: #25ff72;
-  font-size: 36px;
-  font-weight: 900;
-  text-shadow: 0 0 14px #25ff72;
-}
-
-.youtube {
-  position: absolute;
-  right: 70px;
-  top: 722px;
-  color: white;
-  font-size: 32px;
-  font-weight: 900;
-}
-
-.youtube::before {
-  content: "▶";
-  color: red;
-  margin-right: 10px;
-}
-
-/* goaluri dreapta */
-.goals {
-  position: absolute;
-  right: 58px;
-  top: 845px;
-  width: 520px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.goal {
-  height: 58px;
-  border-radius: 12px;
-  border: 2px solid rgba(0, 200, 255, 0.95);
-  background: rgba(7, 18, 42, 0.85);
-  box-shadow:
-    0 0 14px rgba(0, 200, 255, 0.85),
-    inset 0 0 22px rgba(0, 115, 255, 0.35);
-  padding: 8px 18px;
-  color: white;
-  font-size: 18px;
-}
-
-.goal .bar {
-  margin-top: 7px;
-  height: 7px;
-  border-radius: 20px;
-  background: rgba(255,255,255,0.15);
-  overflow: hidden;
-}
-
-.goal .fill {
-  width: 0%;
-  height: 100%;
-  background: linear-gradient(90deg, #00eaff, #25ff72);
-}
-
-/* chat */
-.chat-area {
-  position: absolute;
-  left: 42px;
-  top: 990px;
-  width: 996px;
-  height: 870px;
-  border-radius: 24px;
-  border: 2px solid rgba(0, 200, 255, 0.85);
+  border: 1px solid rgba(0, 225, 255, 0.60);
   background:
-    radial-gradient(circle at 85% 85%, rgba(0, 140, 255, 0.22), transparent 28%),
-    rgba(0, 5, 14, 0.42);
+    linear-gradient(90deg, rgba(0, 255, 150, 0.12), rgba(0, 160, 255, 0.10), rgba(255, 0, 180, 0.12)),
+    rgba(0, 8, 18, 0.72);
   box-shadow:
-    0 0 22px rgba(0, 200, 255, 0.85),
-    inset 0 0 40px rgba(0, 200, 255, 0.09);
+    0 0 18px rgba(0, 225, 255, 0.55),
+    inset 0 0 26px rgba(255, 0, 190, 0.12);
+  z-index: 2;
 }
 
-.chat-label {
+/* rama sursă video */
+.source-frame {
   position: absolute;
-  top: -22px;
-  left: 28px;
-  background: #06101d;
-  padding: 8px 26px;
-  border: 1px solid rgba(0, 200, 255, 0.75);
-  border-radius: 10px;
-  color: white;
-  font-size: 22px;
-  font-weight: 900;
-  text-shadow: 0 0 10px #00eaff;
+  left: 92px;
+  top: 724px;
+  width: 896px;
+  height: 520px;
+  border-radius: 18px;
+  border: 2px solid rgba(0, 225, 255, 0.72);
+  background: rgba(0, 0, 0, 0.10);
+  box-shadow:
+    0 0 16px rgba(0, 225, 255, 0.58),
+    inset 0 0 28px rgba(0, 225, 255, 0.08);
+  z-index: 2;
 }
 
-/* linii clean */
+/* zona goaluri, doar spațiu delimitat */
+.goals-zone {
+  position: absolute;
+  right: 100px;
+  top: 1266px;
+  width: 500px;
+  height: 132px;
+  border-radius: 18px;
+  border: 1px solid rgba(0, 225, 255, 0.38);
+  background: rgba(0, 8, 18, 0.18);
+  box-shadow:
+    0 0 14px rgba(0, 225, 255, 0.35),
+    inset 0 0 20px rgba(0, 225, 255, 0.06);
+  z-index: 2;
+}
+
+/* chat de la goaluri în jos */
+.chat-frame {
+  position: absolute;
+  left: 92px;
+  top: 1418px;
+  width: 896px;
+  height: 450px;
+  border-radius: 0 0 24px 24px;
+  border: 2px solid rgba(0, 225, 255, 0.88);
+  background:
+    radial-gradient(circle at 12% 20%, rgba(0, 255, 170, 0.16), transparent 26%),
+    radial-gradient(circle at 82% 80%, rgba(0, 140, 255, 0.20), transparent 30%),
+    rgba(0, 7, 16, 0.34);
+  box-shadow:
+    0 0 22px rgba(0, 225, 255, 0.85),
+    inset 0 0 36px rgba(0, 225, 255, 0.08);
+  z-index: 2;
+}
+
+/* colțuri tech */
+.corner {
+  position: absolute;
+  width: 52px;
+  height: 52px;
+  border-color: #00eaff;
+  opacity: 0.95;
+  filter: drop-shadow(0 0 8px #00eaff);
+}
+
+.c1 {
+  left: 92px;
+  top: 48px;
+  border-left: 3px solid;
+  border-top: 3px solid;
+}
+
+.c2 {
+  right: 92px;
+  top: 48px;
+  border-right: 3px solid;
+  border-top: 3px solid;
+}
+
+.c3 {
+  left: 92px;
+  top: 1418px;
+  border-left: 3px solid;
+  border-top: 3px solid;
+}
+
+.c4 {
+  right: 92px;
+  bottom: 52px;
+  border-right: 3px solid;
+  border-bottom: 3px solid;
+}
+
+/* linii neon discrete */
 .line {
   position: absolute;
   height: 2px;
-  background: linear-gradient(90deg, transparent, #00eaff, transparent);
-  opacity: 0.8;
-  animation: scan 4s infinite linear;
+  background: linear-gradient(90deg, transparent, #00eaff, #ffffff, #00eaff, transparent);
+  opacity: 0.75;
+  filter: drop-shadow(0 0 8px #00eaff);
+  animation: pulseLine 3.5s infinite ease-in-out;
+  z-index: 1;
 }
 
-.l1 {
-  top: 650px;
-  left: 100px;
-  width: 880px;
+.line.one {
+  left: 130px;
+  top: 612px;
+  width: 820px;
 }
 
-.l2 {
-  top: 955px;
-  left: 80px;
-  width: 900px;
+.line.two {
+  left: 130px;
+  top: 1404px;
+  width: 820px;
 }
 
-@keyframes scan {
-  0% { opacity: 0.2; transform: translateX(-30px); }
-  50% { opacity: 1; }
-  100% { opacity: 0.2; transform: translateX(30px); }
+.line.three {
+  left: 130px;
+  bottom: 42px;
+  width: 820px;
+}
+
+@keyframes pulseLine {
+  0%, 100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* particule */
+.particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #00eaff;
+  box-shadow: 0 0 10px #00eaff;
+  opacity: 0.7;
+  animation: particleMove 7s infinite linear;
+}
+
+.p1 { left: 180px; top: 680px; animation-delay: 0s; }
+.p2 { left: 830px; top: 620px; animation-delay: 1s; }
+.p3 { left: 340px; top: 1320px; animation-delay: 2s; }
+.p4 { left: 760px; top: 1530px; animation-delay: 3s; }
+.p5 { left: 520px; top: 1860px; animation-delay: 4s; }
+
+@keyframes particleMove {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-80px);
+    opacity: 0;
+  }
+}
+
+/* diagonale cyberpunk jos */
+.diagonal {
+  position: absolute;
+  right: -140px;
+  bottom: 120px;
+  width: 620px;
+  height: 170px;
+  transform: rotate(-22deg);
+  border-top: 3px solid rgba(0, 225, 255, 0.55);
+  border-bottom: 3px solid rgba(255, 0, 190, 0.30);
+  box-shadow: 0 0 18px rgba(0, 225, 255, 0.35);
+  opacity: 0.75;
+}
+
+.diagonal.two {
+  right: -220px;
+  bottom: 220px;
+  width: 520px;
+  opacity: 0.35;
+}
+
+/* scan light */
+.scan {
+  position: absolute;
+  left: 0;
+  top: -220px;
+  width: 100%;
+  height: 160px;
+  background: linear-gradient(180deg, transparent, rgba(0, 225, 255, 0.10), transparent);
+  animation: scanMove 8s infinite linear;
+  z-index: 0;
+}
+
+@keyframes scanMove {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(2200px);
+  }
 }
 </style>
 </head>
 
 <body>
   <div class="overlay">
-    <div class="glow g1"></div>
-    <div class="glow g2"></div>
+    <div class="scan"></div>
 
-    <div class="top-frame"></div>
+    <div class="glow one"></div>
+    <div class="glow two"></div>
+    <div class="glow three"></div>
 
-    <div class="logo"><span>KIP</span> B-ZONE</div>
+    <div class="camera-frame"></div>
+    <div class="mid-divider"></div>
+    <div class="source-frame"></div>
+    <div class="goals-zone"></div>
+    <div class="chat-frame"></div>
 
-    <div class="left-widgets">
-      <div class="widget">
-        <div class="icon">🌹</div>
-        <div class="title">OBIECTIV</div>
-        <div class="value">97 / 200</div>
-      </div>
+    <div class="corner c1"></div>
+    <div class="corner c2"></div>
+    <div class="corner c3"></div>
+    <div class="corner c4"></div>
 
-      <div class="widget">
-        <div class="icon">🔥</div>
-        <div class="title">TOP STREAK</div>
-        <div class="value">x 30</div>
-      </div>
+    <div class="line one"></div>
+    <div class="line two"></div>
+    <div class="line three"></div>
 
-      <div class="widget">
-        <div class="icon">🎁</div>
-        <div class="title">TIKTOK</div>
-        <div class="value">500 coins</div>
-      </div>
-    </div>
+    <div class="diagonal"></div>
+    <div class="diagonal two"></div>
 
-    <div class="middle-bar">
-      <div class="action-text">MONEY GUN <span>TASTA F</span></div>
-      <div class="promo">PROMO CODE <b>KIP</b> LA CHECKOUT</div>
-    </div>
-
-    <div class="kick">K 0</div>
-    <div class="youtube">0</div>
-
-    <div class="goals">
-      <div class="goal">
-        Monede pentru cufăr : 0 / 1,500 (0%)
-        <div class="bar"><div class="fill"></div></div>
-      </div>
-
-      <div class="goal">
-        Like Goal : 0 / 100,000 (0%)
-        <div class="bar"><div class="fill"></div></div>
-      </div>
-    </div>
-
-    <div class="chat-area">
-      <div class="chat-label">CHAT</div>
-    </div>
-
-    <div class="line l1"></div>
-    <div class="line l2"></div>
+    <div class="particle p1"></div>
+    <div class="particle p2"></div>
+    <div class="particle p3"></div>
+    <div class="particle p4"></div>
+    <div class="particle p5"></div>
   </div>
 </body>
 </html>
