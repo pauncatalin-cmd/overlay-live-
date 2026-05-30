@@ -14,6 +14,8 @@
   --bar-width:1000px;
   --bar-height:150px;
   --bar-top:547px;
+  --slide-font-size:26px;
+  --thanks-font-size:46px;
 
   --blue:#00aaff;
   --cyan:#00eaff;
@@ -365,6 +367,15 @@ html, body{
 .row-top{top:4px;}
 .row-bottom{top:78px;}
 
+.full-overlay.showing-thanks #trollRow{
+  opacity:0;
+}
+
+.full-overlay.showing-thanks #promoRow{
+  top:0;
+  height:var(--bar-height);
+}
+
 .slide{
   position:absolute;
   inset:0;
@@ -374,6 +385,31 @@ html, body{
   gap:10px;
   padding:0 18px;
   overflow:visible;
+}
+
+.slide.thanks-slide{
+  top:0;
+  left:0;
+  width:var(--bar-width);
+  height:var(--bar-height);
+  align-items:center;
+  justify-content:center;
+  flex-wrap:nowrap;
+  gap:0;
+  padding:0;
+}
+
+.thanks-main{
+  color:#ffffff;
+  font-size:var(--thanks-font-size);
+  font-weight:1000;
+  line-height:1;
+  letter-spacing:1px;
+  text-shadow:
+    0 0 4px #ffffff,
+    0 0 10px var(--pink),
+    0 0 18px rgba(255,79,216,.75),
+    0 0 26px rgba(0,234,255,.45);
 }
 
 .slide.entering .char{
@@ -476,7 +512,7 @@ html, body{
 
 .label{
   color:white;
-  font-size:22px;
+  font-size:var(--slide-font-size);
   font-weight:1000;
   letter-spacing:.4px;
   text-shadow:
@@ -487,7 +523,7 @@ html, body{
 
 .main{
   color:var(--blue);
-  font-size:38px;
+  font-size:var(--slide-font-size);
   font-weight:1000;
   line-height:1;
   text-shadow:
@@ -498,7 +534,7 @@ html, body{
 
 .troll-main{
   color:var(--pink);
-  font-size:38px;
+  font-size:var(--slide-font-size);
   font-weight:1000;
   line-height:1;
   text-shadow:
@@ -509,7 +545,7 @@ html, body{
 
 .small{
   color:white;
-  font-size:18px;
+  font-size:var(--slide-font-size);
   font-weight:900;
   text-shadow:
     0 1px 2px rgba(0,0,0,.9),
@@ -579,11 +615,11 @@ html, body{
 .pill{
   position:relative;
   z-index:6;
-  padding:5px 11px;
+  padding:4px 10px;
   border-radius:999px;
   background:var(--green);
   color:#061006;
-  font-size:15px;
+  font-size:var(--slide-font-size);
   font-weight:1000;
   white-space:nowrap;
   box-shadow:
@@ -784,11 +820,12 @@ const trollItems = [
 
 const promoItems = [
   {icon:"🛒", label:"B-ZONE", main:"SHOP", small:"INTRĂ PE SHOP"},
-  {icon:"🏷️", label:"PROMO CODE", main:"KIP", mainClass:"green", small:"LA CHECKOUT"},
+  {icon:"🏷️", label:"PROMO CODE", main:"KIP", mainClass:"green", small:"LA CHECKOUT + 5% BONUS PE SHOP!"},
   {icon:"🌐", label:"LINK SHOP", main:"GTA5.RO/SHOP"},
   {icon:"🎁", label:"ADAUGĂ", main:"REFERRAL 13", mainClass:"green", pill:"MAȘINĂ + GEANTĂ"},
   {icon:"🔴", label:"LIVE PE", main:"TIKTOK", mainClass:"red", small:"KICK & YOUTUBE", platforms:true},
-  {discord:true, label:"DISCORD", labelClass:"discord", main:"KIP Community", mainClass:"green", pill:"LINK ÎN BIO"}
+  {discord:true, label:"DISCORD", labelClass:"discord", main:"KIP Community", mainClass:"green", pill:"LINK ÎN BIO"},
+  {thanks:true, main:"MULȚUMESC PENTRU APRECIERI!"}
 ];
 
 let trollIndex = 0;
@@ -829,6 +866,14 @@ function discordLogo(){
 }
 
 function buildSlide(item, type){
+  if(item.thanks){
+    let html = `<div class="slide thanks-slide entering">`;
+    html += sparkles();
+    html += textSpans(item.main, "thanks-main");
+    html += `</div>`;
+    return html;
+  }
+
   let html = `<div class="slide entering">`;
   html += sparkles();
 
@@ -876,6 +921,14 @@ function activateSlide(slide){
 
 function switchSlide(rowId, items, index, type){
   const row = document.getElementById(rowId);
+  const overlay = document.querySelector(".full-overlay");
+
+  if(type === "promo" && items[index] && items[index].thanks){
+    overlay.classList.add("showing-thanks");
+  } else if(type === "promo"){
+    overlay.classList.remove("showing-thanks");
+  }
+
   const oldSlide = row.querySelector(".slide:not(.leaving)");
 
   if(oldSlide){
